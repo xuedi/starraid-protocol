@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package starraid.v1;
+
+option go_package = "github.com/xuedi/starraid-protocol/gen/go/starraidv1;starraidv1";
+option csharp_namespace = "Starraid.Protocol.V1";
+
+// A position in the 2D universe. Coordinates are galaxy-scale, so 64-bit.
+message Vec2 {
+  sint64 x = 1;
+  sint64 y = 2;
+}

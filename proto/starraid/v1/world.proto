@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package starraid.v1;
+
+import "starraid/v1/common.proto";
+
+option go_package = "github.com/xuedi/starraid-protocol/gen/go/starraidv1;starraidv1";
+option csharp_namespace = "Starraid.Protocol.V1";
+
+// Interest-managed neighbour updates (the "beacon" pattern). The server pushes
+// only what the client's sensors can perceive (see docs/objects.md, docs/server.md).
+
+message ObjectEnter {
+  uint64 object_id = 1;
+  Vec2 position = 2;
+}
+
+message ObjectUpdate {
+  uint64 object_id = 1;
+  Vec2 position = 2;
+}
+
+message ObjectLeave {
+  uint64 object_id = 1;
+}

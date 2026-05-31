@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package starraid.v1;
+
+option go_package = "github.com/xuedi/starraid-protocol/gen/go/starraidv1;starraidv1";
+option csharp_namespace = "Starraid.Protocol.V1";
+
+// Connection handshake: the client announces its protocol version first.
+message Hello {
+  uint32 protocol_version = 1;
+}
+
+// Server's reply to Hello.
+message VersionResult {
+  bool accepted = 1;
+  uint32 min_supported = 2; // hint to update the client when rejected
+}
+
+// Client authenticates. Identical path for humans and bots (see docs/protocol.md).
+message LoginRequest {
+  string username = 1;
+  string secret = 2;
+}
+
+message LoginResult {
+  bool ok = 1;
+  string reason = 2;
+}
