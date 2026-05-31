@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package starraid.v1;
+
+import "starraid/v1/common.proto";
+
+option go_package = "github.com/xuedi/starraid-protocol/gen/go/starraidv1;starraidv1";
+option csharp_namespace = "Starraid.Protocol.V1";
+
+// The connection's *own* controlled object (see docs/protocol.md "Self"). This is
+// distinct from the interest-managed neighbour beacons in world.proto: Self* is
+// always about the object this client controls, never a perceived neighbour.
+
+// Sent once after authentication: the server tells the client which object it
+// controls (session lifecycle step 3, docs/protocol.md). Grows additively — type,
+// hull/shield, installed modules and cargo follow in later slices.
+message SelfAssign {
+  uint64 object_id = 1;
+  Vec2 position = 2;
+}
+
+// Authoritative snapshot of the controlled object's state. An initial SelfUpdate
+// follows SelfAssign; periodic/event-driven updates arrive with movement (a later
+// slice) and will carry power/brownout, module states, and cargo.
+message SelfUpdate {
+  uint64 object_id = 1;
+  Vec2 position = 2;
+}
