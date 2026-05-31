@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package starraid.v1;
+
+import "starraid/v1/session.proto";
+
+option go_package = "github.com/xuedi/starraid-protocol/gen/go/starraidv1;starraidv1";
+option csharp_namespace = "Starraid.Protocol.V1";
+
+// Directional envelopes. Every frame on the wire is exactly one envelope, so the
+// receiver always knows the message type (and direction) via the oneof. Two
+// envelopes — one per direction — keep illegal-direction messages off the wire.
+//
+// Framing: each envelope is sent as a length-prefixed frame — a 4-byte
+// big-endian uint32 byte length followed by the marshalled envelope (see
+// protocol/README.md). The oneof grows additively as new messages are added.
+
+// Client → server (intent / commands). See docs/protocol.md for the taxonomy.
+message ClientMessage {
+  oneof msg {
+    Hello hello = 1;
+    LoginRequest login = 2;
+  }
+}
+
+// Server → client (authoritative results / events). See docs/protocol.md.
+message ServerMessage {
+  oneof msg {
+    VersionResult version_result = 1;
+    LoginResult login_result = 2;
+  }
+}

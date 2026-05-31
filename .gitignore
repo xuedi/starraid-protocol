@@ -1,2 +1,9 @@
-# Generated bindings — regenerate from the schema with `just gen`.
-/gen/
+# Generated C# bindings — regenerate from the schema with `just gen`.
+/gen/csharp/
+
+# The Go bindings under /gen/go ARE committed (a Go module the server imports);
+# regenerate them with `just gen` whenever the .proto schema changes.
+
+# JetBrains IDEs (GoLand, IntelliJ, etc.)
+.idea/
+*.iml

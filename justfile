@@ -2,7 +2,7 @@
 # Requires: protoc, and (for Go) protoc-gen-go on PATH:
 #   go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 
-proto_files := `find proto -name '*.proto' 2>/dev/null`
+proto_files := `find proto -name '*.proto' 2>/dev/null | tr '\n' ' '`
 
 # Generate all bindings
 gen: gen-go gen-csharp
