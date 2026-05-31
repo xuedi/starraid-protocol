@@ -5,6 +5,7 @@ package starraid.v1;
 import "starraid/v1/session.proto";
 import "starraid/v1/self.proto";
 import "starraid/v1/navigation.proto";
+import "starraid/v1/world.proto";
 
 option go_package = "github.com/xuedi/starraid-protocol/gen/go/starraidv1;starraidv1";
 option csharp_namespace = "Starraid.Protocol.V1";
@@ -34,5 +35,9 @@ message ServerMessage {
     LoginResult login_result = 2;
     SelfAssign self_assign = 3;
     SelfUpdate self_update = 4;
+    // Interest-managed neighbour beacons (see world.proto, docs/objects.md).
+    ObjectEnter object_enter = 5;
+    ObjectUpdate object_update = 6;
+    ObjectLeave object_leave = 7;
   }
 }

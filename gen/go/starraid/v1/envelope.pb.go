@@ -145,6 +145,9 @@ type ServerMessage struct {
 	//	*ServerMessage_LoginResult
 	//	*ServerMessage_SelfAssign
 	//	*ServerMessage_SelfUpdate
+	//	*ServerMessage_ObjectEnter
+	//	*ServerMessage_ObjectUpdate
+	//	*ServerMessage_ObjectLeave
 	Msg           isServerMessage_Msg `protobuf_oneof:"msg"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -223,6 +226,33 @@ func (x *ServerMessage) GetSelfUpdate() *SelfUpdate {
 	return nil
 }
 
+func (x *ServerMessage) GetObjectEnter() *ObjectEnter {
+	if x != nil {
+		if x, ok := x.Msg.(*ServerMessage_ObjectEnter); ok {
+			return x.ObjectEnter
+		}
+	}
+	return nil
+}
+
+func (x *ServerMessage) GetObjectUpdate() *ObjectUpdate {
+	if x != nil {
+		if x, ok := x.Msg.(*ServerMessage_ObjectUpdate); ok {
+			return x.ObjectUpdate
+		}
+	}
+	return nil
+}
+
+func (x *ServerMessage) GetObjectLeave() *ObjectLeave {
+	if x != nil {
+		if x, ok := x.Msg.(*ServerMessage_ObjectLeave); ok {
+			return x.ObjectLeave
+		}
+	}
+	return nil
+}
+
 type isServerMessage_Msg interface {
 	isServerMessage_Msg()
 }
@@ -243,6 +273,19 @@ type ServerMessage_SelfUpdate struct {
 	SelfUpdate *SelfUpdate `protobuf:"bytes,4,opt,name=self_update,json=selfUpdate,proto3,oneof"`
 }
 
+type ServerMessage_ObjectEnter struct {
+	// Interest-managed neighbour beacons (see world.proto, docs/objects.md).
+	ObjectEnter *ObjectEnter `protobuf:"bytes,5,opt,name=object_enter,json=objectEnter,proto3,oneof"`
+}
+
+type ServerMessage_ObjectUpdate struct {
+	ObjectUpdate *ObjectUpdate `protobuf:"bytes,6,opt,name=object_update,json=objectUpdate,proto3,oneof"`
+}
+
+type ServerMessage_ObjectLeave struct {
+	ObjectLeave *ObjectLeave `protobuf:"bytes,7,opt,name=object_leave,json=objectLeave,proto3,oneof"`
+}
+
 func (*ServerMessage_VersionResult) isServerMessage_Msg() {}
 
 func (*ServerMessage_LoginResult) isServerMessage_Msg() {}
@@ -251,24 +294,33 @@ func (*ServerMessage_SelfAssign) isServerMessage_Msg() {}
 
 func (*ServerMessage_SelfUpdate) isServerMessage_Msg() {}
 
+func (*ServerMessage_ObjectEnter) isServerMessage_Msg() {}
+
+func (*ServerMessage_ObjectUpdate) isServerMessage_Msg() {}
+
+func (*ServerMessage_ObjectLeave) isServerMessage_Msg() {}
+
 var File_starraid_v1_envelope_proto protoreflect.FileDescriptor
 
 const file_starraid_v1_envelope_proto_rawDesc = "" +
 	"\n" +
-	"\x1astarraid/v1/envelope.proto\x12\vstarraid.v1\x1a\x19starraid/v1/session.proto\x1a\x16starraid/v1/self.proto\x1a\x1cstarraid/v1/navigation.proto\"\xc7\x01\n" +
+	"\x1astarraid/v1/envelope.proto\x12\vstarraid.v1\x1a\x19starraid/v1/session.proto\x1a\x16starraid/v1/self.proto\x1a\x1cstarraid/v1/navigation.proto\x1a\x17starraid/v1/world.proto\"\xc7\x01\n" +
 	"\rClientMessage\x12*\n" +
 	"\x05hello\x18\x01 \x01(\v2\x12.starraid.v1.HelloH\x00R\x05hello\x121\n" +
 	"\x05login\x18\x02 \x01(\v2\x19.starraid.v1.LoginRequestH\x00R\x05login\x12'\n" +
 	"\x04move\x18\x03 \x01(\v2\x11.starraid.v1.MoveH\x00R\x04move\x12'\n" +
 	"\x04stop\x18\x04 \x01(\v2\x11.starraid.v1.StopH\x00R\x04stopB\x05\n" +
-	"\x03msg\"\x92\x02\n" +
+	"\x03msg\"\xd2\x03\n" +
 	"\rServerMessage\x12C\n" +
 	"\x0eversion_result\x18\x01 \x01(\v2\x1a.starraid.v1.VersionResultH\x00R\rversionResult\x12=\n" +
 	"\flogin_result\x18\x02 \x01(\v2\x18.starraid.v1.LoginResultH\x00R\vloginResult\x12:\n" +
 	"\vself_assign\x18\x03 \x01(\v2\x17.starraid.v1.SelfAssignH\x00R\n" +
 	"selfAssign\x12:\n" +
 	"\vself_update\x18\x04 \x01(\v2\x17.starraid.v1.SelfUpdateH\x00R\n" +
-	"selfUpdateB\x05\n" +
+	"selfUpdate\x12=\n" +
+	"\fobject_enter\x18\x05 \x01(\v2\x18.starraid.v1.ObjectEnterH\x00R\vobjectEnter\x12@\n" +
+	"\robject_update\x18\x06 \x01(\v2\x19.starraid.v1.ObjectUpdateH\x00R\fobjectUpdate\x12=\n" +
+	"\fobject_leave\x18\a \x01(\v2\x18.starraid.v1.ObjectLeaveH\x00R\vobjectLeaveB\x05\n" +
 	"\x03msgBXZ?github.com/xuedi/starraid-protocol/gen/go/starraidv1;starraidv1\xaa\x02\x14Starraid.Protocol.V1b\x06proto3"
 
 var (
@@ -295,21 +347,27 @@ var file_starraid_v1_envelope_proto_goTypes = []any{
 	(*LoginResult)(nil),   // 7: starraid.v1.LoginResult
 	(*SelfAssign)(nil),    // 8: starraid.v1.SelfAssign
 	(*SelfUpdate)(nil),    // 9: starraid.v1.SelfUpdate
+	(*ObjectEnter)(nil),   // 10: starraid.v1.ObjectEnter
+	(*ObjectUpdate)(nil),  // 11: starraid.v1.ObjectUpdate
+	(*ObjectLeave)(nil),   // 12: starraid.v1.ObjectLeave
 }
 var file_starraid_v1_envelope_proto_depIdxs = []int32{
-	2, // 0: starraid.v1.ClientMessage.hello:type_name -> starraid.v1.Hello
-	3, // 1: starraid.v1.ClientMessage.login:type_name -> starraid.v1.LoginRequest
-	4, // 2: starraid.v1.ClientMessage.move:type_name -> starraid.v1.Move
-	5, // 3: starraid.v1.ClientMessage.stop:type_name -> starraid.v1.Stop
-	6, // 4: starraid.v1.ServerMessage.version_result:type_name -> starraid.v1.VersionResult
-	7, // 5: starraid.v1.ServerMessage.login_result:type_name -> starraid.v1.LoginResult
-	8, // 6: starraid.v1.ServerMessage.self_assign:type_name -> starraid.v1.SelfAssign
-	9, // 7: starraid.v1.ServerMessage.self_update:type_name -> starraid.v1.SelfUpdate
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	2,  // 0: starraid.v1.ClientMessage.hello:type_name -> starraid.v1.Hello
+	3,  // 1: starraid.v1.ClientMessage.login:type_name -> starraid.v1.LoginRequest
+	4,  // 2: starraid.v1.ClientMessage.move:type_name -> starraid.v1.Move
+	5,  // 3: starraid.v1.ClientMessage.stop:type_name -> starraid.v1.Stop
+	6,  // 4: starraid.v1.ServerMessage.version_result:type_name -> starraid.v1.VersionResult
+	7,  // 5: starraid.v1.ServerMessage.login_result:type_name -> starraid.v1.LoginResult
+	8,  // 6: starraid.v1.ServerMessage.self_assign:type_name -> starraid.v1.SelfAssign
+	9,  // 7: starraid.v1.ServerMessage.self_update:type_name -> starraid.v1.SelfUpdate
+	10, // 8: starraid.v1.ServerMessage.object_enter:type_name -> starraid.v1.ObjectEnter
+	11, // 9: starraid.v1.ServerMessage.object_update:type_name -> starraid.v1.ObjectUpdate
+	12, // 10: starraid.v1.ServerMessage.object_leave:type_name -> starraid.v1.ObjectLeave
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_starraid_v1_envelope_proto_init() }
@@ -320,6 +378,7 @@ func file_starraid_v1_envelope_proto_init() {
 	file_starraid_v1_session_proto_init()
 	file_starraid_v1_self_proto_init()
 	file_starraid_v1_navigation_proto_init()
+	file_starraid_v1_world_proto_init()
 	file_starraid_v1_envelope_proto_msgTypes[0].OneofWrappers = []any{
 		(*ClientMessage_Hello)(nil),
 		(*ClientMessage_Login)(nil),
@@ -331,6 +390,9 @@ func file_starraid_v1_envelope_proto_init() {
 		(*ServerMessage_LoginResult)(nil),
 		(*ServerMessage_SelfAssign)(nil),
 		(*ServerMessage_SelfUpdate)(nil),
+		(*ServerMessage_ObjectEnter)(nil),
+		(*ServerMessage_ObjectUpdate)(nil),
+		(*ServerMessage_ObjectLeave)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
