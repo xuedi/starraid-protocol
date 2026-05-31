@@ -9,22 +9,26 @@ game's messages (see [../docs/protocol.md](../docs/protocol.md)).
 - Scope is the **wire protocol only** — *not* the DB schema (server↔admin contract) and *not*
   the dispatcher control API.
 
+## Prerequisites
+
+- `protoc` — a system package (e.g. `paru -S protobuf` on Arch)
+- the `protoc-gen-go` plugin on your `PATH` — `just install` (drops it in `$(go env GOPATH)/bin`)
+
 ## Generate bindings
 
-Requires `protoc`, plus the Go plugin on your `PATH`:
-
 ```sh
-go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-just gen        # → gen/go (Go) and gen/csharp (C#)
+just install    # one-time: install the protoc Go plugin
+just gen        # → gen/go (Go, committed) and gen/csharp (C#, gitignored)
 ```
 
 (`buf.yaml` is provided for lint/format if you adopt [buf](https://buf.build); the `justfile`
 uses `protoc` directly so no extra install is needed beyond the Go plugin.)
 
-The **Go** bindings under `gen/go` are a committed Go module
-(`github.com/xuedi/starraid-protocol/gen/go`, wired into the meta repo's `go.work`) so the
-server/npc/admin build without everyone running `protoc` — regenerate them on every schema
-change. The **C# bindings** (`gen/csharp`) are gitignored and regenerated for the client build.
+The **Go** bindings under `gen/go` are a **committed** Go module
+(`github.com/xuedi/starraid-protocol/gen/go`) so the server/npc build without everyone running
+`protoc` — regenerate them on every schema change. Consumers (server, npc) point a local
+`go.work` at this checkout; see their READMEs. The **C# bindings** (`gen/csharp`) are gitignored
+and regenerated for the client build.
 
 ## Framing & envelopes
 
