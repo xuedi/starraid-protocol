@@ -4,6 +4,7 @@ package starraid.v1;
 
 import "starraid/v1/session.proto";
 import "starraid/v1/self.proto";
+import "starraid/v1/navigation.proto";
 
 option go_package = "github.com/xuedi/starraid-protocol/gen/go/starraidv1;starraidv1";
 option csharp_namespace = "Starraid.Protocol.V1";
@@ -21,6 +22,8 @@ message ClientMessage {
   oneof msg {
     Hello hello = 1;
     LoginRequest login = 2;
+    Move move = 3;
+    Stop stop = 4;
   }
 }
 

@@ -28,6 +28,8 @@ type ClientMessage struct {
 	//
 	//	*ClientMessage_Hello
 	//	*ClientMessage_Login
+	//	*ClientMessage_Move
+	//	*ClientMessage_Stop
 	Msg           isClientMessage_Msg `protobuf_oneof:"msg"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -88,6 +90,24 @@ func (x *ClientMessage) GetLogin() *LoginRequest {
 	return nil
 }
 
+func (x *ClientMessage) GetMove() *Move {
+	if x != nil {
+		if x, ok := x.Msg.(*ClientMessage_Move); ok {
+			return x.Move
+		}
+	}
+	return nil
+}
+
+func (x *ClientMessage) GetStop() *Stop {
+	if x != nil {
+		if x, ok := x.Msg.(*ClientMessage_Stop); ok {
+			return x.Stop
+		}
+	}
+	return nil
+}
+
 type isClientMessage_Msg interface {
 	isClientMessage_Msg()
 }
@@ -100,9 +120,21 @@ type ClientMessage_Login struct {
 	Login *LoginRequest `protobuf:"bytes,2,opt,name=login,proto3,oneof"`
 }
 
+type ClientMessage_Move struct {
+	Move *Move `protobuf:"bytes,3,opt,name=move,proto3,oneof"`
+}
+
+type ClientMessage_Stop struct {
+	Stop *Stop `protobuf:"bytes,4,opt,name=stop,proto3,oneof"`
+}
+
 func (*ClientMessage_Hello) isClientMessage_Msg() {}
 
 func (*ClientMessage_Login) isClientMessage_Msg() {}
+
+func (*ClientMessage_Move) isClientMessage_Msg() {}
+
+func (*ClientMessage_Stop) isClientMessage_Msg() {}
 
 // Server → client (authoritative results / events). See docs/protocol.md.
 type ServerMessage struct {
@@ -223,10 +255,12 @@ var File_starraid_v1_envelope_proto protoreflect.FileDescriptor
 
 const file_starraid_v1_envelope_proto_rawDesc = "" +
 	"\n" +
-	"\x1astarraid/v1/envelope.proto\x12\vstarraid.v1\x1a\x19starraid/v1/session.proto\x1a\x16starraid/v1/self.proto\"u\n" +
+	"\x1astarraid/v1/envelope.proto\x12\vstarraid.v1\x1a\x19starraid/v1/session.proto\x1a\x16starraid/v1/self.proto\x1a\x1cstarraid/v1/navigation.proto\"\xc7\x01\n" +
 	"\rClientMessage\x12*\n" +
 	"\x05hello\x18\x01 \x01(\v2\x12.starraid.v1.HelloH\x00R\x05hello\x121\n" +
-	"\x05login\x18\x02 \x01(\v2\x19.starraid.v1.LoginRequestH\x00R\x05loginB\x05\n" +
+	"\x05login\x18\x02 \x01(\v2\x19.starraid.v1.LoginRequestH\x00R\x05login\x12'\n" +
+	"\x04move\x18\x03 \x01(\v2\x11.starraid.v1.MoveH\x00R\x04move\x12'\n" +
+	"\x04stop\x18\x04 \x01(\v2\x11.starraid.v1.StopH\x00R\x04stopB\x05\n" +
 	"\x03msg\"\x92\x02\n" +
 	"\rServerMessage\x12C\n" +
 	"\x0eversion_result\x18\x01 \x01(\v2\x1a.starraid.v1.VersionResultH\x00R\rversionResult\x12=\n" +
@@ -255,23 +289,27 @@ var file_starraid_v1_envelope_proto_goTypes = []any{
 	(*ServerMessage)(nil), // 1: starraid.v1.ServerMessage
 	(*Hello)(nil),         // 2: starraid.v1.Hello
 	(*LoginRequest)(nil),  // 3: starraid.v1.LoginRequest
-	(*VersionResult)(nil), // 4: starraid.v1.VersionResult
-	(*LoginResult)(nil),   // 5: starraid.v1.LoginResult
-	(*SelfAssign)(nil),    // 6: starraid.v1.SelfAssign
-	(*SelfUpdate)(nil),    // 7: starraid.v1.SelfUpdate
+	(*Move)(nil),          // 4: starraid.v1.Move
+	(*Stop)(nil),          // 5: starraid.v1.Stop
+	(*VersionResult)(nil), // 6: starraid.v1.VersionResult
+	(*LoginResult)(nil),   // 7: starraid.v1.LoginResult
+	(*SelfAssign)(nil),    // 8: starraid.v1.SelfAssign
+	(*SelfUpdate)(nil),    // 9: starraid.v1.SelfUpdate
 }
 var file_starraid_v1_envelope_proto_depIdxs = []int32{
 	2, // 0: starraid.v1.ClientMessage.hello:type_name -> starraid.v1.Hello
 	3, // 1: starraid.v1.ClientMessage.login:type_name -> starraid.v1.LoginRequest
-	4, // 2: starraid.v1.ServerMessage.version_result:type_name -> starraid.v1.VersionResult
-	5, // 3: starraid.v1.ServerMessage.login_result:type_name -> starraid.v1.LoginResult
-	6, // 4: starraid.v1.ServerMessage.self_assign:type_name -> starraid.v1.SelfAssign
-	7, // 5: starraid.v1.ServerMessage.self_update:type_name -> starraid.v1.SelfUpdate
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 2: starraid.v1.ClientMessage.move:type_name -> starraid.v1.Move
+	5, // 3: starraid.v1.ClientMessage.stop:type_name -> starraid.v1.Stop
+	6, // 4: starraid.v1.ServerMessage.version_result:type_name -> starraid.v1.VersionResult
+	7, // 5: starraid.v1.ServerMessage.login_result:type_name -> starraid.v1.LoginResult
+	8, // 6: starraid.v1.ServerMessage.self_assign:type_name -> starraid.v1.SelfAssign
+	9, // 7: starraid.v1.ServerMessage.self_update:type_name -> starraid.v1.SelfUpdate
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_starraid_v1_envelope_proto_init() }
@@ -281,9 +319,12 @@ func file_starraid_v1_envelope_proto_init() {
 	}
 	file_starraid_v1_session_proto_init()
 	file_starraid_v1_self_proto_init()
+	file_starraid_v1_navigation_proto_init()
 	file_starraid_v1_envelope_proto_msgTypes[0].OneofWrappers = []any{
 		(*ClientMessage_Hello)(nil),
 		(*ClientMessage_Login)(nil),
+		(*ClientMessage_Move)(nil),
+		(*ClientMessage_Stop)(nil),
 	}
 	file_starraid_v1_envelope_proto_msgTypes[1].OneofWrappers = []any{
 		(*ServerMessage_VersionResult)(nil),

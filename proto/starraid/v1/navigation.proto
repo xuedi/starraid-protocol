@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package starraid.v1;
+
+import "starraid/v1/common.proto";
+
+option go_package = "github.com/xuedi/starraid-protocol/gen/go/starraidv1;starraidv1";
+option csharp_namespace = "Starraid.Protocol.V1";
+
+// Navigation intent (client → server). See docs/protocol.md "Navigation" and the
+// "intent, not state" principle: the client asks to move; the server applies its
+// own max speed, steers, and decides arrival, staying authoritative.
+
+// Move toward a point, halting on arrival (move-to-point model).
+message Move {
+  Vec2 target = 1;
+}
+
+// Cancel the current move; the object holds its current position.
+message Stop {}
