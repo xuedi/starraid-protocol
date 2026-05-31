@@ -17,6 +17,9 @@ option csharp_namespace = "Starraid.Protocol.V1";
 message SelfAssign {
   uint64 object_id = 1;
   Vec2 position = 2;
+  // The controlled object's class key (object_class.key) so the client can pick
+  // its own sprite, same as the neighbour beacon (see docs/objects.md).
+  string type_key = 3;
 }
 
 // Authoritative snapshot of the controlled object's state. An initial SelfUpdate

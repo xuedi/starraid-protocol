@@ -25,9 +25,12 @@ const (
 // controls (session lifecycle step 3, docs/protocol.md). Grows additively — type,
 // hull/shield, installed modules and cargo follow in later slices.
 type SelfAssign struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ObjectId      uint64                 `protobuf:"varint,1,opt,name=object_id,json=objectId,proto3" json:"object_id,omitempty"`
-	Position      *Vec2                  `protobuf:"bytes,2,opt,name=position,proto3" json:"position,omitempty"`
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	ObjectId uint64                 `protobuf:"varint,1,opt,name=object_id,json=objectId,proto3" json:"object_id,omitempty"`
+	Position *Vec2                  `protobuf:"bytes,2,opt,name=position,proto3" json:"position,omitempty"`
+	// The controlled object's class key (object_class.key) so the client can pick
+	// its own sprite, same as the neighbour beacon (see docs/objects.md).
+	TypeKey       string `protobuf:"bytes,3,opt,name=type_key,json=typeKey,proto3" json:"type_key,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -74,6 +77,13 @@ func (x *SelfAssign) GetPosition() *Vec2 {
 		return x.Position
 	}
 	return nil
+}
+
+func (x *SelfAssign) GetTypeKey() string {
+	if x != nil {
+		return x.TypeKey
+	}
+	return ""
 }
 
 // Authoritative snapshot of the controlled object's state. An initial SelfUpdate
@@ -135,11 +145,12 @@ var File_starraid_v1_self_proto protoreflect.FileDescriptor
 
 const file_starraid_v1_self_proto_rawDesc = "" +
 	"\n" +
-	"\x16starraid/v1/self.proto\x12\vstarraid.v1\x1a\x18starraid/v1/common.proto\"X\n" +
+	"\x16starraid/v1/self.proto\x12\vstarraid.v1\x1a\x18starraid/v1/common.proto\"s\n" +
 	"\n" +
 	"SelfAssign\x12\x1b\n" +
 	"\tobject_id\x18\x01 \x01(\x04R\bobjectId\x12-\n" +
-	"\bposition\x18\x02 \x01(\v2\x11.starraid.v1.Vec2R\bposition\"X\n" +
+	"\bposition\x18\x02 \x01(\v2\x11.starraid.v1.Vec2R\bposition\x12\x19\n" +
+	"\btype_key\x18\x03 \x01(\tR\atypeKey\"X\n" +
 	"\n" +
 	"SelfUpdate\x12\x1b\n" +
 	"\tobject_id\x18\x01 \x01(\x04R\bobjectId\x12-\n" +

@@ -13,6 +13,10 @@ option csharp_namespace = "Starraid.Protocol.V1";
 message ObjectEnter {
   uint64 object_id = 1;
   Vec2 position = 2;
+  // The object's class key (object_class.key — "skiff", "hauler", "station", …)
+  // so the client can pick a sprite per object (see docs/objects.md). Derived
+  // attributes (mass/power/speed/shield) stay server-internal for now.
+  string type_key = 3;
 }
 
 message ObjectUpdate {

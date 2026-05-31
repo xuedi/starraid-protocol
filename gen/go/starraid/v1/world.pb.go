@@ -22,9 +22,13 @@ const (
 )
 
 type ObjectEnter struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ObjectId      uint64                 `protobuf:"varint,1,opt,name=object_id,json=objectId,proto3" json:"object_id,omitempty"`
-	Position      *Vec2                  `protobuf:"bytes,2,opt,name=position,proto3" json:"position,omitempty"`
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	ObjectId uint64                 `protobuf:"varint,1,opt,name=object_id,json=objectId,proto3" json:"object_id,omitempty"`
+	Position *Vec2                  `protobuf:"bytes,2,opt,name=position,proto3" json:"position,omitempty"`
+	// The object's class key (object_class.key — "skiff", "hauler", "station", …)
+	// so the client can pick a sprite per object (see docs/objects.md). Derived
+	// attributes (mass/power/speed/shield) stay server-internal for now.
+	TypeKey       string `protobuf:"bytes,3,opt,name=type_key,json=typeKey,proto3" json:"type_key,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -71,6 +75,13 @@ func (x *ObjectEnter) GetPosition() *Vec2 {
 		return x.Position
 	}
 	return nil
+}
+
+func (x *ObjectEnter) GetTypeKey() string {
+	if x != nil {
+		return x.TypeKey
+	}
+	return ""
 }
 
 type ObjectUpdate struct {
@@ -173,10 +184,11 @@ var File_starraid_v1_world_proto protoreflect.FileDescriptor
 
 const file_starraid_v1_world_proto_rawDesc = "" +
 	"\n" +
-	"\x17starraid/v1/world.proto\x12\vstarraid.v1\x1a\x18starraid/v1/common.proto\"Y\n" +
+	"\x17starraid/v1/world.proto\x12\vstarraid.v1\x1a\x18starraid/v1/common.proto\"t\n" +
 	"\vObjectEnter\x12\x1b\n" +
 	"\tobject_id\x18\x01 \x01(\x04R\bobjectId\x12-\n" +
-	"\bposition\x18\x02 \x01(\v2\x11.starraid.v1.Vec2R\bposition\"Z\n" +
+	"\bposition\x18\x02 \x01(\v2\x11.starraid.v1.Vec2R\bposition\x12\x19\n" +
+	"\btype_key\x18\x03 \x01(\tR\atypeKey\"Z\n" +
 	"\fObjectUpdate\x12\x1b\n" +
 	"\tobject_id\x18\x01 \x01(\x04R\bobjectId\x12-\n" +
 	"\bposition\x18\x02 \x01(\v2\x11.starraid.v1.Vec2R\bposition\"*\n" +
